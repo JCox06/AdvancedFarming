@@ -1,0 +1,9 @@
+1) Blocks that will grow a crop
+2) Powered by a biofuel generator
+    -Three main types, some for ethanol, some for wood, etc
+3) Genetic modification of crops to allow for a better yield
+4) More types of fertilizers for instance NPK and their creation
+5) artificial lighting for crops that allows them to grow faster
+6) High CO2 concentration to help plants grow
+7) Temperature control units
+8) Humidity control units

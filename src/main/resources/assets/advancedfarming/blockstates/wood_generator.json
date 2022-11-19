@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "powered=true": {"model":  "advancedfarming:block/wood_generator_on"},
+    "powered=false": {"model": "advancedfarming:block/wood_generator_off"}
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "variants": {
+    "facing=north,power_state=0": {
+      "model": "advancedfarming:block/base_station_off"
+    },
+
+    "facing=north,power_state=1": {
+      "model": "advancedfarming:block/base_station_on"
+    },
+
+    "facing=north,power_state=2": {
+      "model": "advancedfarming:block/base_station_issue"
+    },
+
+    "facing=north,power_state=3": {
+      "model": "advancedfarming:block/base_station_good"
+    },
+
+
+
+
+
+    "facing=east,power_state=0": {
+      "model": "advancedfarming:block/base_station_off",
+      "y": 90
+    },
+
+    "facing=east,power_state=1": {
+      "model": "advancedfarming:block/base_station_on",
+      "y": 90
+    },
+
+    "facing=east,power_state=2": {
+      "model": "advancedfarming:block/base_station_issue",
+      "y": 90
+    },
+
+    "facing:east,power_state=3": {
+      "model": "advancedfarming:block/base_station_good",
+      "y": 90
+    },
+
+
+
+
+
+
+    "facing=south,power_state=0": {
+      "model": "advancedfarming:block/base_station_off",
+      "y": 180
+    },
+
+    "facing=south,power_state=1": {
+      "model": "advancedfarming:block/base_station_on",
+      "y": 180
+    },
+
+    "facing=south,power_state=2": {
+      "model": "advancedfarming:block/base_station_issue",
+      "y": 180
+    },
+
+    "facing=south,power_state=3": {
+      "model": "advancedfarming:block/base_station_good",
+      "y": 180
+    },
+
+
+
+
+    "facing=west,power_state=0": {
+      "model": "advancedfarming:block/base_station_off",
+      "y": 270
+    },
+
+    "facing=west,power_state=1": {
+      "model": "advancedfarming:block/base_station_on",
+      "y": 270
+    },
+
+    "facing=west,power_state=2": {
+      "model": "advancedfarming:block/base_station_issue",
+      "y": 270
+    },
+
+    "facing=west,power_state=3": {
+      "model": "advancedfarming:block/base_station_good",
+      "y": 270
+    }
+  }
+}
