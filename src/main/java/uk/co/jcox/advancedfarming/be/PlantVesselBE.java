@@ -1,6 +1,7 @@
 package uk.co.jcox.advancedfarming.be;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
@@ -14,6 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -28,7 +31,11 @@ import java.util.Objects;
 
 public class PlantVesselBE extends BlockEntity {
 
-    public static final String NBT_INCUBATING_BLOCK = "Crop";
+    private static final String NBT_INCUBATING_BLOCK = "Crop";
+    private static final String NBT_INVENTORY_INPUT = "IInventory";
+    private static final String NBT_INVENTORY_OUTPUT = "OInventory";
+    private static final String NBT_ENERGY = "Energy";
+    private static final String NBT_TICKER = "Counter";
 
     public static final ModelProperty<BlockState> INCUBATING_BLOCK = new ModelProperty<>();
 
@@ -36,8 +43,8 @@ public class PlantVesselBE extends BlockEntity {
 
     private int counter;
 
-    private final ItemStackHandler input = createInventory();
-    private final ItemStackHandler output = createInventory();
+    private final ItemStackHandler input = createInventory(5);
+    private final ItemStackHandler output = createInventory(1);
     private final EnergyStorage energy = new EnergyStorage(30);
 
     private final LazyOptional<IItemHandler> inputHandler = LazyOptional.of(() -> input);
@@ -50,11 +57,16 @@ public class PlantVesselBE extends BlockEntity {
     }
 
     public void tickServer() {
-
+        //todo redesign this checking system
+        ItemStack stack = input.getStackInSlot(0);
+        BlockState newState = Block.byItem(stack.getItem()).defaultBlockState();
+        if (!Objects.equals(newState, incubatingBlock)) {
+            this.setIncubatingBlock(newState);
+        }
     }
 
-    private ItemStackHandler createInventory() {
-        return new ItemStackHandler(1) {
+    private ItemStackHandler createInventory(int size) {
+        return new ItemStackHandler(size) {
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
@@ -62,7 +74,7 @@ public class PlantVesselBE extends BlockEntity {
 
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                return stack.is(Tags.Items.CROPS);
+                return stack.is(Tags.Items.SEEDS);
             }
         };
 
@@ -95,9 +107,10 @@ public class PlantVesselBE extends BlockEntity {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         //Server data
-        tag.put("Inventory", input.serializeNBT());
-        tag.put("Energy", energy.serializeNBT());
-        tag.putInt("Counter", counter);
+        tag.put(NBT_INVENTORY_INPUT, input.serializeNBT());
+        tag.put(NBT_INVENTORY_OUTPUT, output.serializeNBT());
+        tag.put(NBT_ENERGY, energy.serializeNBT());
+        tag.putInt(NBT_TICKER, counter);
 
         saveClientData(tag);
     }
@@ -107,15 +120,21 @@ public class PlantVesselBE extends BlockEntity {
         super.load(tag);
 
         //Server
-        if (tag.contains("Inventory")) {
-            input.deserializeNBT(tag.getCompound("Inventory"));
+        if (tag.contains(NBT_INVENTORY_INPUT)) {
+            input.deserializeNBT(tag.getCompound(NBT_INVENTORY_INPUT));
         }
 
-        if (tag.contains("Energy")) {
-            energy.deserializeNBT(tag.get("Energy"));
+        if (tag.contains(NBT_INVENTORY_OUTPUT)) {
+            output.deserializeNBT(tag.getCompound(NBT_INVENTORY_OUTPUT));
         }
 
-        counter = tag.getInt("Counter");
+        if (tag.contains(NBT_ENERGY)) {
+            energy.deserializeNBT(tag.get(NBT_ENERGY));
+        }
+
+        if (tag.contains(NBT_TICKER)) {
+            counter = tag.getInt(NBT_TICKER);
+        }
 
         loadClientData(tag);
 
@@ -185,9 +204,29 @@ public class PlantVesselBE extends BlockEntity {
 
 
     //Should be called on the server only
-    public void setIncubatingBlock(BlockState state) {
+    private void setIncubatingBlock(BlockState state) {
         this.incubatingBlock = state;
         setChanged();
         level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (ForgeCapabilities.ITEM_HANDLER == cap) {
+            if (side == null) {
+                return combinedItemHandler.cast();
+            }
+            if (side == Direction.UP) {
+                return inputHandler.cast();
+            }
+            if (side == Direction.DOWN) {
+                return outputHandler.cast();
+            }
+        }
+        if (cap == ForgeCapabilities.ENERGY) {
+            return energyHandler.cast();
+        }
+
+        return super.getCapability(cap, side);
     }
 }

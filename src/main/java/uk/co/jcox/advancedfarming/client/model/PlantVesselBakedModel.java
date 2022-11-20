@@ -13,7 +13,6 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.IDynamicBakedModel;
@@ -21,6 +20,7 @@ import net.minecraftforge.client.model.IQuadTransformer;
 import net.minecraftforge.client.model.QuadTransformers;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
+import uk.co.jcox.advancedfarming.be.PlantVesselBE;
 import uk.co.jcox.advancedfarming.block.PlantVessel;
 import uk.co.jcox.advancedfarming.util.ClientTools;
 
@@ -113,7 +113,7 @@ public class PlantVesselBakedModel implements IDynamicBakedModel {
         List<BakedQuad> incubatingBlockQuads = new ArrayList<>();
 
 //        BlockState crop = Blocks.WHEAT.defaultBlockState().setValue(CropBlock.AGE, 7);
-        BlockState crop = Blocks.SWEET_BERRY_BUSH.defaultBlockState();
+        BlockState crop = extraData.get(PlantVesselBE.INCUBATING_BLOCK);
 
 
         if (crop != null && !(crop.getBlock() instanceof PlantVessel)) {
