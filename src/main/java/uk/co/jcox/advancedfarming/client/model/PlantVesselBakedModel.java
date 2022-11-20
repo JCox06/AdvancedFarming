@@ -7,27 +7,19 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.entity.ItemFrameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.RedstoneLampBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.IDynamicBakedModel;
 import net.minecraftforge.client.model.IQuadTransformer;
 import net.minecraftforge.client.model.QuadTransformers;
 import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.common.PlantType;
-import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import uk.co.jcox.advancedfarming.block.PlantVessel;
 import uk.co.jcox.advancedfarming.util.ClientTools;
@@ -37,7 +29,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 
 import static uk.co.jcox.advancedfarming.util.ClientTools.v;
@@ -81,12 +72,6 @@ public class PlantVesselBakedModel implements IDynamicBakedModel {
         }
 
         return Collections.emptyList();
-
-//        if (layer != null) {
-//            return getQuadsOfIncubatingBlock(state, rand, extraData, layer);
-//        }
-//
-//        return Collections.emptyList();
     }
 
     private void generateQuadCache() {
