@@ -17,7 +17,6 @@ public class ClientSetup {
 
     public static void init(FMLClientSetupEvent event) {
         MenuScreens.register(Registration.WOOD_GENERATOR_CONTAINER.get(), WoodGeneratorScreen::new);
-        ItemBlockRenderTypes.setRenderLayer(Registration.PLANT_VESSEL_BLOCK.get(), RenderType.translucent());
     }
 
     @SubscribeEvent

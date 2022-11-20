@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 import static uk.co.jcox.advancedfarming.util.ClientTools.v;
@@ -54,13 +55,15 @@ public class PlantVesselBakedModel implements IDynamicBakedModel {
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType layer) {
 
 
-        if (side != null || (layer != null && layer.equals(RenderType.solid()))) {
+        if ((side != null || (layer != null && !layer.equals(RenderType.solid())))) {
             return Collections.emptyList();
         }
+
 
         List<BakedQuad> combined = new ArrayList<>(quads);
         combined.addAll(getQuadsOfIncubatingBlock(state, rand, extraData, layer));
         return combined;
+//
     }
 
     private void generateQuadCache() {
