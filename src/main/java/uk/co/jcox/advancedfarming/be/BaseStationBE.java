@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -14,7 +13,7 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import uk.co.jcox.advancedfarming.block.BaseStation;
+import uk.co.jcox.advancedfarming.block.BaseStationBlock;
 import uk.co.jcox.advancedfarming.setup.Registration;
 
 public class BaseStationBE extends BlockEntity {
@@ -59,9 +58,9 @@ public class BaseStationBE extends BlockEntity {
     public void tickServer() {
         BlockState blockstate = level.getBlockState(worldPosition);
         if (energy.getEnergyStored() >= POWER_REQUIRED) {
-            level.setBlock(worldPosition, blockstate.setValue(BaseStation.POWER_STATE, 1), Block.UPDATE_ALL);
+            level.setBlock(worldPosition, blockstate.setValue(BaseStationBlock.POWER_STATE, 1), Block.UPDATE_ALL);
         } else if (energy.getEnergyStored() < POWER_REQUIRED) {
-            level.setBlock(worldPosition, blockstate.setValue(BaseStation.POWER_STATE, 0), Block.UPDATE_ALL);
+            level.setBlock(worldPosition, blockstate.setValue(BaseStationBlock.POWER_STATE, 0), Block.UPDATE_ALL);
         }
     }
 

@@ -19,7 +19,7 @@ import uk.co.jcox.advancedfarming.be.BaseStationBE;
 
 import static uk.co.jcox.advancedfarming.AdvancedFarming.MODID;
 
-public class BaseStation extends AbstractAFBlock implements EntityBlock {
+public class BaseStationBlock extends AbstractAFBlock implements EntityBlock {
 
 
     public static final IntegerProperty POWER_STATE = IntegerProperty.create("power_state", 0, 3);
@@ -27,7 +27,7 @@ public class BaseStation extends AbstractAFBlock implements EntityBlock {
     private static final ResourceLocation BASIC_TOOLTIP = new ResourceLocation(MODID, "tooltip.basic_base_station");
     private static final ResourceLocation DETAILED_TOOLTIP = new ResourceLocation(MODID, "tooltip.detailed_base_station");
 
-    public BaseStation() {
+    public BaseStationBlock() {
         super(Properties.of(Material.METAL).requiresCorrectToolForDrops(), BASIC_TOOLTIP, DETAILED_TOOLTIP);
     }
 

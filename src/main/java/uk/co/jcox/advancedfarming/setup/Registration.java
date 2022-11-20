@@ -13,8 +13,8 @@ import net.minecraftforge.registries.RegistryObject;
 import uk.co.jcox.advancedfarming.be.BaseStationBE;
 import uk.co.jcox.advancedfarming.be.PlantVesselBE;
 import uk.co.jcox.advancedfarming.be.WoodGeneratorBE;
-import uk.co.jcox.advancedfarming.block.BaseStation;
-import uk.co.jcox.advancedfarming.block.PlantVessel;
+import uk.co.jcox.advancedfarming.block.BaseStationBlock;
+import uk.co.jcox.advancedfarming.block.PlantVesselBlock;
 import uk.co.jcox.advancedfarming.block.WoodGeneratorBlock;
 import uk.co.jcox.advancedfarming.container.WoodGeneratorContainer;
 
@@ -40,14 +40,14 @@ public class Registration {
 
 
     //BaseStation
-    public static final RegistryObject<Block> BASE_STATION_BLOCK = BLOCKS.register("base_station", BaseStation::new);
+    public static final RegistryObject<Block> BASE_STATION_BLOCK = BLOCKS.register("base_station", BaseStationBlock::new);
     public static final RegistryObject<Item> BASE_STATION_ITEM = fromBlock(BASE_STATION_BLOCK);
     public static final RegistryObject<BlockEntityType<BaseStationBE>> BASE_STATION_BE = BLOCK_ENTITIES.register("base_station",
             () -> BlockEntityType.Builder.of(BaseStationBE::new, BASE_STATION_BLOCK.get()).build(null));
 
 
     //Crop Receptacle
-    public static final RegistryObject<Block> PLANT_VESSEL_BLOCK = BLOCKS.register("plant_vessel", PlantVessel::new);
+    public static final RegistryObject<Block> PLANT_VESSEL_BLOCK = BLOCKS.register("plant_vessel", PlantVesselBlock::new);
     public static final RegistryObject<Item> PLANT_VESSEL_ITEM = fromBlock(PLANT_VESSEL_BLOCK);
     public static final RegistryObject<BlockEntityType<PlantVesselBE>> PLANT_VESSEL_BE = BLOCK_ENTITIES.register("plant_vessel",
             () -> BlockEntityType.Builder.of(PlantVesselBE::new, PLANT_VESSEL_BLOCK.get()).build(null));

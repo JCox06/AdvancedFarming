@@ -21,7 +21,7 @@ import net.minecraftforge.client.model.QuadTransformers;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import uk.co.jcox.advancedfarming.be.PlantVesselBE;
-import uk.co.jcox.advancedfarming.block.PlantVessel;
+import uk.co.jcox.advancedfarming.block.PlantVesselBlock;
 import uk.co.jcox.advancedfarming.util.ClientTools;
 
 import javax.annotation.Nonnull;
@@ -116,7 +116,7 @@ public class PlantVesselBakedModel implements IDynamicBakedModel {
         BlockState crop = extraData.get(PlantVesselBE.INCUBATING_BLOCK);
 
 
-        if (crop != null && !(crop.getBlock() instanceof PlantVessel)) {
+        if (crop != null && !(crop.getBlock() instanceof PlantVesselBlock)) {
             if (layer == null || getRenderTypes(crop, rand, ModelData.EMPTY).contains(layer)) {
 
                 BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(crop);
