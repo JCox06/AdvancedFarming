@@ -1,6 +1,13 @@
 package uk.co.jcox.advancedfarming.block;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -18,6 +25,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.Nullable;
 import uk.co.jcox.advancedfarming.be.PlantVesselBE;
 
@@ -61,8 +70,7 @@ public class PlantVessel extends AbstractAFBlock implements EntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-
-        if (! level.isClientSide) {
+        if (! level.isClientSide()) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof PlantVesselBE ve) {
                 ve.setIncubatingBlock(Blocks.GRASS_BLOCK.defaultBlockState());

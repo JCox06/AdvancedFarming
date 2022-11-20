@@ -7,18 +7,28 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.ItemFrameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.RedstoneLampBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.IDynamicBakedModel;
 import net.minecraftforge.client.model.IQuadTransformer;
 import net.minecraftforge.client.model.QuadTransformers;
 import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.common.PlantType;
+import net.minecraftforge.common.Tags;
+import org.jetbrains.annotations.NotNull;
 import uk.co.jcox.advancedfarming.block.PlantVessel;
 import uk.co.jcox.advancedfarming.util.ClientTools;
 
@@ -54,16 +64,29 @@ public class PlantVesselBakedModel implements IDynamicBakedModel {
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType layer) {
 
+        if (state == null) {
+            return new ArrayList<>(quads);
+        }
 
-        if ((side != null || (layer != null && !layer.equals(RenderType.solid())))) {
+        if ((side != null || (layer == null))) {
             return Collections.emptyList();
         }
 
+        if (layer.equals(RenderType.translucent())) {
+            return new ArrayList<>(quads);
+        }
 
-        List<BakedQuad> combined = new ArrayList<>(quads);
-        combined.addAll(getQuadsOfIncubatingBlock(state, rand, extraData, layer));
-        return combined;
+        if (layer.equals(RenderType.cutout())) {
+            return getQuadsOfIncubatingBlock(state, rand, extraData, layer);
+        }
+
+        return Collections.emptyList();
+
+//        if (layer != null) {
+//            return getQuadsOfIncubatingBlock(state, rand, extraData, layer);
+//        }
 //
+//        return Collections.emptyList();
     }
 
     private void generateQuadCache() {
@@ -101,26 +124,30 @@ public class PlantVesselBakedModel implements IDynamicBakedModel {
     }
 
 
-    private List<BakedQuad> getQuadsOfIncubatingBlock(@Nullable BlockState state, @Nullable RandomSource rand, @Nullable ModelData extraData, RenderType layer) {
+    private List<BakedQuad> getQuadsOfIncubatingBlock(@Nullable BlockState state, @NotNull RandomSource rand, @Nullable ModelData extraData, RenderType layer) {
         List<BakedQuad> incubatingBlockQuads = new ArrayList<>();
 
-        BlockState crop = Blocks.IRON_BLOCK.defaultBlockState();
+//        BlockState crop = Blocks.WHEAT.defaultBlockState().setValue(CropBlock.AGE, 7);
+        BlockState crop = Blocks.SWEET_BERRY_BUSH.defaultBlockState();
+
 
         if (crop != null && !(crop.getBlock() instanceof PlantVessel)) {
-            if (layer == null || getRenderTypes(crop, rand, extraData).contains(layer)) {
+            if (layer == null || getRenderTypes(crop, rand, ModelData.EMPTY).contains(layer)) {
+
                 BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(crop);
 
                 try {
                     Transformation translate = new Transformation(Matrix4f.createScaleMatrix(0.5f, 0.5f, 0.5f));
+                    translate = translate.compose(new Transformation(Matrix4f.createTranslateMatrix(8f/16, 5/16f, 8f /16)));
                     IQuadTransformer transformer = QuadTransformers.applying(translate);
 
                     //Get the quad of every side, transform it, and add it to the list of quads to render
-                    for (Direction s : Direction.values()) {
-                        List<BakedQuad> modelQuads = model.getQuads(crop, s, rand, ModelData.EMPTY, layer);
-                        for (BakedQuad quad : modelQuads) {
-                            incubatingBlockQuads.add(transformer.process(quad));
-                        }
+                    //Don't give direction to force all sides of crop to render
+                    List<BakedQuad> modelQuads = model.getQuads(crop, null, rand, ModelData.EMPTY, layer);
+                    for (BakedQuad quad : modelQuads) {
+                        incubatingBlockQuads.add(transformer.process(quad));
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -128,6 +155,11 @@ public class PlantVesselBakedModel implements IDynamicBakedModel {
         }
 
         return incubatingBlockQuads;
+    }
+
+    @Override
+    public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+        return ChunkRenderTypeSet.of(RenderType.translucent(), RenderType.cutout());
     }
 
     @Override
