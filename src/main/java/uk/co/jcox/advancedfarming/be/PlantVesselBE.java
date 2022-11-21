@@ -10,6 +10,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
@@ -37,14 +38,21 @@ public class PlantVesselBE extends BlockEntity {
     private static final String NBT_ENERGY = "Energy";
     private static final String NBT_TICKER = "Counter";
 
+    private static final String NBT_COMPOUND_CLIENT = "Client";
+
     public static final ModelProperty<BlockState> INCUBATING_BLOCK = new ModelProperty<>();
+    public static final ModelProperty<Integer> AGE = new ModelProperty<>();
 
     private BlockState incubatingBlock;
-
+    private int age;
     private int counter;
 
-    private final ItemStackHandler input = createInventory(5);
-    private final ItemStackHandler output = createInventory(1);
+    private boolean isStemCrop;
+    private boolean isVegetableBlock;
+    private boolean isCropBlock;
+
+    private final ItemStackHandler input = createInputInventory(1);
+    private final ItemStackHandler output = createOutputInventory(1);
     private final EnergyStorage energy = new EnergyStorage(30);
 
     private final LazyOptional<IItemHandler> inputHandler = LazyOptional.of(() -> input);
@@ -56,25 +64,35 @@ public class PlantVesselBE extends BlockEntity {
         super(Registration.PLANT_VESSEL_BE.get(), pos, state);
     }
 
-    public void tickServer() {
-        //todo redesign this checking system
-        ItemStack stack = input.getStackInSlot(0);
-        BlockState newState = Block.byItem(stack.getItem()).defaultBlockState();
-        if (!Objects.equals(newState, incubatingBlock)) {
-            this.setIncubatingBlock(newState);
-        }
-    }
-
-    private ItemStackHandler createInventory(int size) {
+    private ItemStackHandler createInputInventory(int size) {
         return new ItemStackHandler(size) {
             @Override
             protected void onContentsChanged(int slot) {
+                Block block = Block.byItem(getStackInSlot(slot).getItem());
+                if (!block.equals(Blocks.AIR)) {
+                    setIncubatingBlock(block.defaultBlockState());
+                }
+
+                //todo check if block is a stem block, vegetable, or a standard crop block and update the booleans accordingly
+
+                counter = 0;
                 setChanged();
             }
 
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                return stack.is(Tags.Items.SEEDS);
+                return stack.is(Tags.Items.CROPS);
+            }
+        };
+
+    }
+
+    private ItemStackHandler createOutputInventory(int size) {
+        return new ItemStackHandler(size) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                counter = 0;
+                setChanged();
             }
         };
 
@@ -92,6 +110,14 @@ public class PlantVesselBE extends BlockEntity {
                 return stack;
             }
         };
+    }
+    public void tickServer() {
+
+    }
+
+
+    private void manageBlockState() {
+
     }
 
     @Override
@@ -141,14 +167,12 @@ public class PlantVesselBE extends BlockEntity {
     }
 
     private void loadClientData(CompoundTag tag) {
-        //Client [todo] there is an issue here, crop and block are the same thing!
         if (tag.contains(NBT_INCUBATING_BLOCK)) {
             incubatingBlock = NbtUtils.readBlockState(tag.getCompound(NBT_INCUBATING_BLOCK));
         }
     }
 
     private void saveClientData(CompoundTag tag) {
-        //Client data
         if (incubatingBlock != null) {
             tag.put(NBT_INCUBATING_BLOCK, NbtUtils.writeBlockState(incubatingBlock));
         }
@@ -156,7 +180,6 @@ public class PlantVesselBE extends BlockEntity {
 
 
     //These pair of methods are called when the client gets a new chunk
-
     //This is called server side and makes data for the client
     @Override
     public CompoundTag getUpdateTag() {
@@ -189,6 +212,7 @@ public class PlantVesselBE extends BlockEntity {
         BlockState oldIncubatorBlock = incubatingBlock;
         CompoundTag tag = pkt.getTag();
         handleUpdateTag(tag);
+
         if (!(Objects.equals(incubatingBlock, oldIncubatorBlock))) {
             requestModelDataUpdate();
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
