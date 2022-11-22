@@ -16,3 +16,5 @@ I have closely followed McJty's tutorials on ForgeModding and had a go at buildi
 - [ ] Temperature controls
 - [ ] Humidity controls
 - [ ] CO2 Controls
+- [ ] Plant small oak trees in the plant vessel to automatically produce wood
+ 

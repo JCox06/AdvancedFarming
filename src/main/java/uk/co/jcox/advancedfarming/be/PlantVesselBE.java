@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
@@ -33,6 +34,7 @@ import java.util.Objects;
 public class PlantVesselBE extends BlockEntity {
 
     private static final String NBT_INCUBATING_BLOCK = "Crop";
+    private static final String NBT_CROP_AGE = "Age";
     private static final String NBT_INVENTORY_INPUT = "IInventory";
     private static final String NBT_INVENTORY_OUTPUT = "OInventory";
     private static final String NBT_ENERGY = "Energy";
@@ -44,12 +46,15 @@ public class PlantVesselBE extends BlockEntity {
     public static final ModelProperty<Integer> AGE = new ModelProperty<>();
 
     private BlockState incubatingBlock;
+
+    //Different crops/plants have a different age blockstate property.
+    //So make a universal property of the age of a crop/plant.
+    //This age propery, WILL be used by the BakedModel for the scale matrix for StemCrops.
+    //if the crop is standard e.g. wheat, then the blockstate propety will be used to show growth
     private int age;
     private int counter;
 
-    private boolean isStemCrop;
-    private boolean isVegetableBlock;
-    private boolean isCropBlock;
+
 
     private final ItemStackHandler input = createInputInventory(1);
     private final ItemStackHandler output = createOutputInventory(1);
@@ -72,16 +77,13 @@ public class PlantVesselBE extends BlockEntity {
                 if (!block.equals(Blocks.AIR)) {
                     setIncubatingBlock(block.defaultBlockState());
                 }
-
-                //todo check if block is a stem block, vegetable, or a standard crop block and update the booleans accordingly
-
                 counter = 0;
                 setChanged();
             }
 
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                return stack.is(Tags.Items.CROPS);
+                return stack.is(Tags.Items.SEEDS);
             }
         };
 
@@ -113,11 +115,31 @@ public class PlantVesselBE extends BlockEntity {
     }
     public void tickServer() {
 
+        if (this.incubatingBlock == null) {
+            return;
+        }
+
+
+        if (this.incubatingBlock.getBlock() instanceof CropBlock cropBlock) {
+            manageBlockState(cropBlock);
+        }
+
+        counter++;
+
     }
 
 
-    private void manageBlockState() {
+    private void manageBlockState(CropBlock cropBlock) {
 
+        int max = cropBlock.getMaxAge();
+        for (int i = 0; i < max; i++) {
+            int criteria = (6000 / max) * i;
+             if (counter >= criteria) {
+                this.setIncubatingBlock(this.incubatingBlock.setValue(cropBlock.getAgeProperty(), i));
+            } else {
+                 return;
+             }
+        }
     }
 
     @Override
@@ -194,6 +216,8 @@ public class PlantVesselBE extends BlockEntity {
         if (tag != null) {
             loadClientData(tag);
         }
+//        CropBlock;
+//        Blocks
     }
 
 
