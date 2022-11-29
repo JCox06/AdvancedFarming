@@ -83,7 +83,7 @@ public class PlantVesselBE extends BlockEntity {
 
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                return stack.is(Tags.Items.SEEDS);
+                return stack.is(Tags.Items.SEEDS) || stack.is(Tags.Items.CROPS);
             }
         };
 
@@ -118,7 +118,6 @@ public class PlantVesselBE extends BlockEntity {
         if (this.incubatingBlock == null) {
             return;
         }
-
 
         if (this.incubatingBlock.getBlock() instanceof CropBlock cropBlock) {
             manageBlockState(cropBlock);
@@ -192,11 +191,15 @@ public class PlantVesselBE extends BlockEntity {
         if (tag.contains(NBT_INCUBATING_BLOCK)) {
             incubatingBlock = NbtUtils.readBlockState(tag.getCompound(NBT_INCUBATING_BLOCK));
         }
+        if (tag.contains(NBT_CROP_AGE)) {
+            this.age = tag.getInt(NBT_CROP_AGE);
+        }
     }
 
     private void saveClientData(CompoundTag tag) {
         if (incubatingBlock != null) {
             tag.put(NBT_INCUBATING_BLOCK, NbtUtils.writeBlockState(incubatingBlock));
+            tag.putInt(NBT_CROP_AGE, this.age);
         }
     }
 
@@ -246,7 +249,8 @@ public class PlantVesselBE extends BlockEntity {
     @Override
     public ModelData getModelData() {
         return ModelData.builder()
-                .with(INCUBATING_BLOCK, incubatingBlock)
+                .with(INCUBATING_BLOCK, this.incubatingBlock)
+                .with(AGE, this.age)
                 .build();
     }
 

@@ -3,8 +3,10 @@
   "block.advancedfarming.wood_generator": "Wood Power Generator",
   "block.advancedfarming.plant_vessel": "Plant Vessel",
 
+  "item.advancedfarming.fertilizer": "NPK Plant Fertilizer",
+
   "tooltip.basic_base_station": "Supply nutrients and fertilizers to the plant container",
-  "tooltip.detailed_base_station": "Connect base stations together to share nutrients, send nutrients in via vascular bundles, place plant containers on top to supply nutrients, use control panels to measure and control nutrient absorbtion",
+  "tooltip.detailed_base_station": "Connect base stations together to share nutrients, send nutrients in via vascular bundles, place plant containers on top to supply nutrients, use control panels to measure and control nutrient absorbtion. Base station are not required, but help with management.",
 
   "tooltip.basic_wood_generator": "Place wood inside to generate power",
   "tooltip.detailed_wood_generator": "Place wood inside to generate 40, send 100 and store up to 600 power",

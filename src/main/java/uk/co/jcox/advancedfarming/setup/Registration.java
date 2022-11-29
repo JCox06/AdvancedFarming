@@ -27,6 +27,8 @@ public class Registration {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
 
+    public static final Item.Properties ITEM_PROPERTIES = new Item.Properties().tab(CommonSetup.ITEM_GROUP);
+
     public static void init(IEventBus bus) {
         BLOCKS.register(bus);
         ITEMS.register(bus);
@@ -35,7 +37,7 @@ public class Registration {
     }
 
     private static <B extends Block> RegistryObject<Item> fromBlock(RegistryObject<B> block) {
-        return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties().tab(CommonSetup.ITEM_GROUP)));
+        return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), ITEM_PROPERTIES));
     }
 
 
@@ -60,4 +62,7 @@ public class Registration {
     public static final RegistryObject<MenuType<WoodGeneratorContainer>> WOOD_GENERATOR_CONTAINER = CONTAINERS.register("wood_generator", () ->
             IForgeMenuType.create((windowId, inv, data) -> new WoodGeneratorContainer(windowId, data.readBlockPos(), inv, inv.player)));
 
+
+    //Items
+    public static final RegistryObject<Item> FERTILIZER = ITEMS.register("fertilizer", () -> new Item(ITEM_PROPERTIES));
 }
