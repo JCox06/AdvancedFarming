@@ -11,12 +11,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class AbstractAFBlock extends Block {
+public abstract class AFBlock extends Block {
 
     public final ResourceLocation basicTooltip;
     public final ResourceLocation detailedTooltip;
 
-    protected AbstractAFBlock(Properties properties, ResourceLocation tbasic, ResourceLocation tdetailed) {
+    protected AFBlock(Properties properties, ResourceLocation tbasic, ResourceLocation tdetailed) {
         super(properties);
         this.basicTooltip = tbasic;
         this.detailedTooltip = tdetailed;

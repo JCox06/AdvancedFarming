@@ -19,7 +19,7 @@ import uk.co.jcox.advancedfarming.be.BaseStationBE;
 
 import static uk.co.jcox.advancedfarming.AdvancedFarming.MODID;
 
-public class BaseStationBlock extends AbstractAFBlock implements EntityBlock {
+public class BaseStationBlock extends AFBlock implements EntityBlock {
 
 
     public static final IntegerProperty POWER_STATE = IntegerProperty.create("power_state", 0, 3);

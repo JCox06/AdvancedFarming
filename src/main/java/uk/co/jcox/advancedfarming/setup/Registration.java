@@ -5,6 +5,8 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -40,6 +42,11 @@ public class Registration {
         return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), ITEM_PROPERTIES));
     }
 
+
+    //Basic Blocks and their items
+    public static final RegistryObject<Block> PHOSPHATE_ROCK_BLOCK = BLOCKS.register("phosphate_rock", () ->
+            new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Item> PHOSPHATE_ROCK_ITEM = fromBlock(PHOSPHATE_ROCK_BLOCK);
 
     //BaseStation
     public static final RegistryObject<Block> BASE_STATION_BLOCK = BLOCKS.register("base_station", BaseStationBlock::new);

@@ -26,7 +26,7 @@ import uk.co.jcox.advancedfarming.be.WoodGeneratorBE;
 
 import static uk.co.jcox.advancedfarming.AdvancedFarming.MODID;
 
-public class WoodGeneratorBlock extends AbstractAFBlock implements EntityBlock {
+public class WoodGeneratorBlock extends AFBlock implements EntityBlock {
 
     private static final ResourceLocation SCREEN_LABEL = new ResourceLocation(MODID, "screen.wood_generator");
     private static final ResourceLocation BASIC_TOOLTIP = new ResourceLocation(MODID, "tooltip.basic_wood_generator");

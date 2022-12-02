@@ -18,7 +18,7 @@ import uk.co.jcox.advancedfarming.be.PlantVesselBE;
 
 import static uk.co.jcox.advancedfarming.AdvancedFarming.MODID;
 
-public class PlantVesselBlock extends AbstractAFBlock implements EntityBlock {
+public class PlantVesselBlock extends AFBlock implements EntityBlock {
 
     private final static ResourceLocation BASIC_TOOLTIP = new ResourceLocation(MODID, "tooltip.basic_plant_vessel");
     private final static ResourceLocation DETAILED_TOOLTIP = new ResourceLocation(MODID, "tooltip.detailed_plant_vessel");
