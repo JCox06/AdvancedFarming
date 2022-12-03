@@ -43,10 +43,11 @@ public class Registration {
     }
 
 
-    //Basic Blocks and their items
+    //Phosphate block
     public static final RegistryObject<Block> PHOSPHATE_ROCK_BLOCK = BLOCKS.register("phosphate_rock", () ->
             new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops()));
     public static final RegistryObject<Item> PHOSPHATE_ROCK_ITEM = fromBlock(PHOSPHATE_ROCK_BLOCK);
+    public static final RegistryObject<Item> RAW_PHOSPHATE = ITEMS.register("raw_phosphate", () -> new Item(ITEM_PROPERTIES));
 
     //BaseStation
     public static final RegistryObject<Block> BASE_STATION_BLOCK = BLOCKS.register("base_station", BaseStationBlock::new);

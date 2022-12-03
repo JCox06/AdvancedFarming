@@ -5,6 +5,7 @@
   "block.advancedfarming.phosphate_rock": "Phosphorite",
 
   "item.advancedfarming.fertilizer": "NPK Plant Fertilizer",
+  "item.advancedfarming.raw_phosphate": "Impure Phosphate",
 
   "tooltip.basic_base_station": "Supply nutrients and fertilizers to the plant container",
   "tooltip.detailed_base_station": "Connect base stations together to share nutrients, send nutrients in via vascular bundles, place plant containers on top to supply nutrients, use control panels to measure and control nutrient absorbtion. Base station are not required, but help with management.",
