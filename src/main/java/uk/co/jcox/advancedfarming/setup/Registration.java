@@ -1,11 +1,21 @@
 package uk.co.jcox.advancedfarming.setup;
 
+import net.minecraft.core.Registry;
+import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.placement.CountPlacement;
+import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,6 +30,8 @@ import uk.co.jcox.advancedfarming.block.PlantVesselBlock;
 import uk.co.jcox.advancedfarming.block.WoodGeneratorBlock;
 import uk.co.jcox.advancedfarming.container.WoodGeneratorContainer;
 
+import java.util.List;
+
 import static uk.co.jcox.advancedfarming.AdvancedFarming.MODID;
 
 public class Registration {
@@ -28,6 +40,8 @@ public class Registration {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
+    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, MODID);
+    public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, MODID);
 
     public static final Item.Properties ITEM_PROPERTIES = new Item.Properties().tab(CommonSetup.ITEM_GROUP);
 
@@ -36,6 +50,8 @@ public class Registration {
         ITEMS.register(bus);
         BLOCK_ENTITIES.register(bus);
         CONTAINERS.register(bus);
+        CONFIGURED_FEATURES.register(bus);
+        PLACED_FEATURES.register(bus);
     }
 
     private static <B extends Block> RegistryObject<Item> fromBlock(RegistryObject<B> block) {
@@ -73,4 +89,15 @@ public class Registration {
 
     //Items
     public static final RegistryObject<Item> FERTILIZER = ITEMS.register("fertilizer", () -> new Item(ITEM_PROPERTIES));
+
+   //Configured features
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> PHOSPHATE_ROCK_BLOCK_CONFIGURED_FEATURE = CONFIGURED_FEATURES.register("phosphate_rock", () ->
+            //Vein Size
+            new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, PHOSPHATE_ROCK_BLOCK.get().defaultBlockState(), 12)));
+
+    public static final RegistryObject<PlacedFeature> POSHPHATE_ROCK_BLOCK_PLACED_FEATURE = PLACED_FEATURES.register("phosphate_rock", () ->
+            //                                                                                                                                    Per chunk
+           new PlacedFeature(PHOSPHATE_ROCK_BLOCK_CONFIGURED_FEATURE.getHolder().get(), List.of(CountPlacement.of(20), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.bottom(), VerticalAnchor.top()))));
+
 }
