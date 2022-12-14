@@ -65,6 +65,16 @@ public class Registration {
     public static final RegistryObject<Item> PHOSPHATE_ROCK_ITEM = fromBlock(PHOSPHATE_ROCK_BLOCK);
     public static final RegistryObject<Item> RAW_PHOSPHATE = ITEMS.register("raw_phosphate", () -> new Item(ITEM_PROPERTIES));
 
+    //Potassium
+    public static final RegistryObject<Block> POTASSIUM_ORE_BLOCK = BLOCKS.register("potassium_ore", () ->
+            new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Item> POTASSIUM_ITEM = fromBlock(POTASSIUM_ORE_BLOCK);
+    public static final RegistryObject<Item> RAW_POTASSIUM = ITEMS.register("raw_potassium", () -> new Item(ITEM_PROPERTIES));
+
+    public static final RegistryObject<Block> POTASSIUM_BLOCK = BLOCKS.register("potassium_block", () ->
+            new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Item> POTASSIUM_BLOCK_ITEM = fromBlock(POTASSIUM_BLOCK);
+
     //BaseStation
     public static final RegistryObject<Block> BASE_STATION_BLOCK = BLOCKS.register("base_station", BaseStationBlock::new);
     public static final RegistryObject<Item> BASE_STATION_ITEM = fromBlock(BASE_STATION_BLOCK);
@@ -96,8 +106,16 @@ public class Registration {
             //Vein Size
             new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, PHOSPHATE_ROCK_BLOCK.get().defaultBlockState(), 12)));
 
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> POTASSIUM_ORE_BLOCK_CONFIGURED_FEATURE = CONFIGURED_FEATURES.register("potassium_ore", () ->
+            new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, POTASSIUM_ORE_BLOCK.get().defaultBlockState(), 4)));
+
     public static final RegistryObject<PlacedFeature> POSHPHATE_ROCK_BLOCK_PLACED_FEATURE = PLACED_FEATURES.register("phosphate_rock", () ->
             //                                                                                                                                    Per chunk
            new PlacedFeature(PHOSPHATE_ROCK_BLOCK_CONFIGURED_FEATURE.getHolder().get(), List.of(CountPlacement.of(20), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.bottom(), VerticalAnchor.top()))));
+
+
+    public static final RegistryObject<PlacedFeature> POTASSIUM_ORE_BLOCK_PLACED_FEATURE = PLACED_FEATURES.register("potassium_ore", () ->
+            new PlacedFeature(POTASSIUM_ORE_BLOCK_CONFIGURED_FEATURE.getHolder().get(), List.of(CountPlacement.of(12), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(120)))));
 
 }
