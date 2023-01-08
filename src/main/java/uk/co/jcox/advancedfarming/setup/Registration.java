@@ -1,23 +1,11 @@
 package uk.co.jcox.advancedfarming.setup;
 
-import net.minecraft.core.Registry;
-import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.placement.CountPlacement;
-import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -32,8 +20,6 @@ import uk.co.jcox.advancedfarming.block.PlantVesselBlock;
 import uk.co.jcox.advancedfarming.block.WoodGeneratorBlock;
 import uk.co.jcox.advancedfarming.container.WoodGeneratorContainer;
 
-import java.util.List;
-
 import static uk.co.jcox.advancedfarming.AdvancedFarming.MODID;
 
 public class Registration {
@@ -42,8 +28,6 @@ public class Registration {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
-    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, MODID);
-    public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, MODID);
 
     public static final Item.Properties ITEM_PROPERTIES = new Item.Properties().tab(CommonSetup.ITEM_GROUP);
 
@@ -52,31 +36,11 @@ public class Registration {
         ITEMS.register(bus);
         BLOCK_ENTITIES.register(bus);
         CONTAINERS.register(bus);
-        CONFIGURED_FEATURES.register(bus);
-        PLACED_FEATURES.register(bus);
     }
 
     private static <B extends Block> RegistryObject<Item> fromBlock(RegistryObject<B> block) {
         return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), ITEM_PROPERTIES));
     }
-
-
-    //Phosphate block
-    public static final RegistryObject<Block> PHOSPHATE_ROCK_BLOCK = BLOCKS.register("phosphate_rock", () ->
-            new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Item> PHOSPHATE_ROCK_ITEM = fromBlock(PHOSPHATE_ROCK_BLOCK);
-    public static final RegistryObject<Item> RAW_PHOSPHATE = ITEMS.register("raw_phosphate", () -> new Item(ITEM_PROPERTIES));
-
-    //Potassium
-    public static final RegistryObject<Block> POTASSIUM_ORE_BLOCK = BLOCKS.register("potassium_ore", () ->
-            new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Item> POTASSIUM_ITEM = fromBlock(POTASSIUM_ORE_BLOCK);
-    public static final RegistryObject<Item> RAW_POTASSIUM = ITEMS.register("raw_potassium", () -> new Item(ITEM_PROPERTIES));
-
-    public static final RegistryObject<Block> POTASSIUM_BLOCK = BLOCKS.register("potassium_block", () ->
-            new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Item> POTASSIUM_BLOCK_ITEM = fromBlock(POTASSIUM_BLOCK);
-
     //BaseStation
     public static final RegistryObject<Block> BASE_STATION_BLOCK = BLOCKS.register("base_station", BaseStationBlock::new);
     public static final RegistryObject<Item> BASE_STATION_ITEM = fromBlock(BASE_STATION_BLOCK);
@@ -102,27 +66,5 @@ public class Registration {
     //Manure
     public static final RegistryObject<Block> MANURE_BLOCK = BLOCKS.register("manure", () -> new ManureBlock(new ResourceLocation(MODID, "tooltip.basic.manure"), new ResourceLocation(MODID, "tooltip.basic.manure")));
     public static final RegistryObject<Item> MANURE_ITEM = fromBlock(MANURE_BLOCK);
-
-    //Items
-    public static final RegistryObject<Item> FERTILIZER = ITEMS.register("fertilizer", () -> new Item(ITEM_PROPERTIES));
-
-   //Configured features
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> PHOSPHATE_ROCK_BLOCK_CONFIGURED_FEATURE = CONFIGURED_FEATURES.register("phosphate_rock", () ->
-            //Vein Size
-            new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, PHOSPHATE_ROCK_BLOCK.get().defaultBlockState(), 12)));
-
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> POTASSIUM_ORE_BLOCK_CONFIGURED_FEATURE = CONFIGURED_FEATURES.register("potassium_ore", () ->
-            new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, POTASSIUM_ORE_BLOCK.get().defaultBlockState(), 4)));
-
-    public static final RegistryObject<PlacedFeature> POSHPHATE_ROCK_BLOCK_PLACED_FEATURE = PLACED_FEATURES.register("phosphate_rock", () ->
-            //                                                                                                                                    Per chunk
-           new PlacedFeature(PHOSPHATE_ROCK_BLOCK_CONFIGURED_FEATURE.getHolder().get(), List.of(CountPlacement.of(20), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.bottom(), VerticalAnchor.top()))));
-
-
-    public static final RegistryObject<PlacedFeature> POTASSIUM_ORE_BLOCK_PLACED_FEATURE = PLACED_FEATURES.register("potassium_ore", () ->
-            new PlacedFeature(POTASSIUM_ORE_BLOCK_CONFIGURED_FEATURE.getHolder().get(), List.of(CountPlacement.of(12), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(120)))));
-
 
 }
