@@ -1,10 +1,10 @@
 package uk.co.jcox.advancedfarming.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -13,12 +13,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ManureBlock extends AFBlock{
+public class ManureBlock extends Block {
 
     public static VoxelShape shape = Shapes.box(0, 0, 0, 1, 0.2, 1);
 
-    public ManureBlock(ResourceLocation tbasic, ResourceLocation tdetailed) {
-        super(BlockBehaviour.Properties.of(Material.DIRT).noCollission(), tbasic, tdetailed);
+    public ManureBlock() {
+        super(BlockBehaviour.Properties.of(Material.DIRT).noCollission());
 
     }
 

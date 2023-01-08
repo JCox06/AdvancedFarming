@@ -1,6 +1,5 @@
 package uk.co.jcox.advancedfarming.setup;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -64,7 +63,7 @@ public class Registration {
 
 
     //Manure
-    public static final RegistryObject<Block> MANURE_BLOCK = BLOCKS.register("manure", () -> new ManureBlock(new ResourceLocation(MODID, "tooltip.basic.manure"), new ResourceLocation(MODID, "tooltip.basic.manure")));
+    public static final RegistryObject<Block> MANURE_BLOCK = BLOCKS.register("manure", () -> new ManureBlock());
     public static final RegistryObject<Item> MANURE_ITEM = fromBlock(MANURE_BLOCK);
 
 }

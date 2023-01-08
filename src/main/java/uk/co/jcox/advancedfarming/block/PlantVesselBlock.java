@@ -1,9 +1,9 @@
 package uk.co.jcox.advancedfarming.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,16 +16,10 @@ import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 import uk.co.jcox.advancedfarming.be.PlantVesselBE;
 
-import static uk.co.jcox.advancedfarming.AdvancedFarming.MODID;
-
-public class PlantVesselBlock extends AFBlock implements EntityBlock {
-
-    private final static ResourceLocation BASIC_TOOLTIP = new ResourceLocation(MODID, "tooltip.basic_plant_vessel");
-    private final static ResourceLocation DETAILED_TOOLTIP = new ResourceLocation(MODID, "tooltip.detailed_plant_vessel");
-
+public class PlantVesselBlock extends Block implements EntityBlock {
 
     public PlantVesselBlock() {
-        super(BlockBehaviour.Properties.of(Material.GLASS).sound(SoundType.GLASS).noOcclusion().requiresCorrectToolForDrops(), BASIC_TOOLTIP, DETAILED_TOOLTIP);
+        super(BlockBehaviour.Properties.of(Material.GLASS).sound(SoundType.GLASS).noOcclusion().requiresCorrectToolForDrops());
     }
 
     @Nullable
