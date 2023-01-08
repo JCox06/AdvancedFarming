@@ -26,15 +26,13 @@ import uk.co.jcox.advancedfarming.be.WoodGeneratorBE;
 
 import static uk.co.jcox.advancedfarming.AdvancedFarming.MODID;
 
-public class WoodGeneratorBlock extends AFBlock implements EntityBlock {
+public class WoodGeneratorBlock extends Block implements EntityBlock {
 
     private static final ResourceLocation SCREEN_LABEL = new ResourceLocation(MODID, "screen.wood_generator");
-    private static final ResourceLocation BASIC_TOOLTIP = new ResourceLocation(MODID, "tooltip.basic_wood_generator");
-    private static final ResourceLocation DETAILED_TOOLTIP = new ResourceLocation(MODID, "tooltip.detailed_wood_generator");
 
     public WoodGeneratorBlock() {
         super(Properties.of(Material.METAL)
-                .lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 10: 0), BASIC_TOOLTIP, DETAILED_TOOLTIP);
+                .lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 10: 0));
     }
 
     @Nullable
