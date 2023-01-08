@@ -2,6 +2,7 @@ package uk.co.jcox.advancedfarming.setup;
 
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.OreFeatures;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -26,6 +27,7 @@ import uk.co.jcox.advancedfarming.be.BaseStationBE;
 import uk.co.jcox.advancedfarming.be.PlantVesselBE;
 import uk.co.jcox.advancedfarming.be.WoodGeneratorBE;
 import uk.co.jcox.advancedfarming.block.BaseStationBlock;
+import uk.co.jcox.advancedfarming.block.ManureBlock;
 import uk.co.jcox.advancedfarming.block.PlantVesselBlock;
 import uk.co.jcox.advancedfarming.block.WoodGeneratorBlock;
 import uk.co.jcox.advancedfarming.container.WoodGeneratorContainer;
@@ -97,6 +99,10 @@ public class Registration {
             IForgeMenuType.create((windowId, inv, data) -> new WoodGeneratorContainer(windowId, data.readBlockPos(), inv, inv.player)));
 
 
+    //Manure
+    public static final RegistryObject<Block> MANURE_BLOCK = BLOCKS.register("manure", () -> new ManureBlock(new ResourceLocation(MODID, "tooltip.basic.manure"), new ResourceLocation(MODID, "tooltip.basic.manure")));
+    public static final RegistryObject<Item> MANURE_ITEM = fromBlock(MANURE_BLOCK);
+
     //Items
     public static final RegistryObject<Item> FERTILIZER = ITEMS.register("fertilizer", () -> new Item(ITEM_PROPERTIES));
 
@@ -117,5 +123,6 @@ public class Registration {
 
     public static final RegistryObject<PlacedFeature> POTASSIUM_ORE_BLOCK_PLACED_FEATURE = PLACED_FEATURES.register("potassium_ore", () ->
             new PlacedFeature(POTASSIUM_ORE_BLOCK_CONFIGURED_FEATURE.getHolder().get(), List.of(CountPlacement.of(12), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(120)))));
+
 
 }
