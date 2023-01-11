@@ -5,17 +5,17 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import uk.co.jcox.advancedfarming.be.BaseStationBE;
-import uk.co.jcox.advancedfarming.be.PlantVesselBE;
 import uk.co.jcox.advancedfarming.be.WoodGeneratorBE;
 import uk.co.jcox.advancedfarming.block.BaseStationBlock;
 import uk.co.jcox.advancedfarming.block.ManureBlock;
-import uk.co.jcox.advancedfarming.block.PlantVesselBlock;
 import uk.co.jcox.advancedfarming.block.WoodGeneratorBlock;
 import uk.co.jcox.advancedfarming.container.WoodGeneratorContainer;
 
@@ -48,10 +48,8 @@ public class Registration {
 
 
     //Crop Receptacle
-    public static final RegistryObject<Block> PLANT_VESSEL_BLOCK = BLOCKS.register("plant_vessel", PlantVesselBlock::new);
+    public static final RegistryObject<Block> PLANT_VESSEL_BLOCK = BLOCKS.register("plant_vessel", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS)));
     public static final RegistryObject<Item> PLANT_VESSEL_ITEM = fromBlock(PLANT_VESSEL_BLOCK);
-    public static final RegistryObject<BlockEntityType<PlantVesselBE>> PLANT_VESSEL_BE = BLOCK_ENTITIES.register("plant_vessel",
-            () -> BlockEntityType.Builder.of(PlantVesselBE::new, PLANT_VESSEL_BLOCK.get()).build(null));
 
     //Wood Generator
     public static final RegistryObject<Block> WOOD_GENERATOR_BLOCK = BLOCKS.register("wood_generator", WoodGeneratorBlock::new);
