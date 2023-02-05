@@ -1,14 +1,11 @@
 package uk.co.jcox.advancedfarming.container;
 
-import net.minecraft.client.gui.screens.inventory.FurnaceScreen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -16,7 +13,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import uk.co.jcox.advancedfarming.be.WoodGeneratorBE;
-import uk.co.jcox.advancedfarming.block.WoodGeneratorBlock;
 import uk.co.jcox.advancedfarming.setup.Registration;
 
 public class WoodGeneratorContainer extends AbstractContainerMenu {

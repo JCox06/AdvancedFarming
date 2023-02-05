@@ -24,20 +24,9 @@ public class BaseStationModelLoader implements IGeometryLoader<BaseStationModelL
 
     public static final ResourceLocation PLANT_VESSEL_LOADER = new ResourceLocation(MODID, "vesselloader");
 
-    //Plant Vessel
-    public static final ResourceLocation VESSEL_SIDE = new ResourceLocation(MODID, "block/plant_vessel_side");
-    public static final ResourceLocation VESSEL_BOTTOM = new ResourceLocation(MODID, "block/plant_vessel_bottom");
-    public static final ResourceLocation VESSEL_BASE = new ResourceLocation(MODID, "block/plant_vessel_base");
-    public static final ResourceLocation VESSEL_BOTTOM_BASE = new ResourceLocation(MODID, "block/plant_vessel_bottom_base");
-
     //Base station
     public static final ResourceLocation BASE_STATION_SIDE = new ResourceLocation(MODID, "block/base_station_side");
     public static final ResourceLocation BASE_STATION_TOP = new ResourceLocation(MODID, "block/base_station_top");
-
-    public static final Material MATERIAL_SIDE = ForgeHooksClient.getBlockMaterial(VESSEL_SIDE);
-    public static final Material MATERIAL_BOTTOM = ForgeHooksClient.getBlockMaterial(VESSEL_BOTTOM);
-    public static final Material MATERIAL_BASE = ForgeHooksClient.getBlockMaterial(VESSEL_BASE);
-    public static final Material MATERIAL_BOTTOM_BASE = ForgeHooksClient.getBlockMaterial(VESSEL_BOTTOM_BASE);
 
     public static final Material MATERIAL_BASE_STATION_SIDE = ForgeHooksClient.getBlockMaterial(BASE_STATION_SIDE);
     public static final Material MATERIAL_BASE_STATION_TOP = ForgeHooksClient.getBlockMaterial(BASE_STATION_TOP);
@@ -56,7 +45,7 @@ public class BaseStationModelLoader implements IGeometryLoader<BaseStationModelL
 
         @Override
         public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-            return List.of(MATERIAL_BOTTOM, MATERIAL_SIDE, MATERIAL_BASE, MATERIAL_BOTTOM_BASE, MATERIAL_BASE_STATION_SIDE, MATERIAL_BASE_STATION_TOP);
+            return List.of(MATERIAL_BASE_STATION_SIDE, MATERIAL_BASE_STATION_TOP);
         }
 
     }
