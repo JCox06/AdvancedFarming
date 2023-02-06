@@ -11,7 +11,7 @@ public class CommonSetup {
     public static final CreativeModeTab ITEM_GROUP = new CreativeModeTab(TAB_NAME) {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(Registration.BASE_STATION_BLOCK.get());
+            return new ItemStack(Registration.PLANT_VESSEL_ITEM.get());
         }
     };
 

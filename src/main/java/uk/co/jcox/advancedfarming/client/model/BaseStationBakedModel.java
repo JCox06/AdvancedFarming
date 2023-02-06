@@ -13,8 +13,6 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.IDynamicBakedModel;
@@ -22,9 +20,9 @@ import net.minecraftforge.client.model.IQuadTransformer;
 import net.minecraftforge.client.model.QuadTransformers;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
+import uk.co.jcox.advancedfarming.be.BaseStationBE;
 import uk.co.jcox.advancedfarming.block.BaseStationBlock;
 import uk.co.jcox.advancedfarming.setup.Registration;
-import uk.co.jcox.advancedfarming.be.BaseStationBE;
 import uk.co.jcox.advancedfarming.util.ClientTools;
 
 import javax.annotation.Nonnull;
@@ -57,6 +55,7 @@ public class BaseStationBakedModel implements IDynamicBakedModel {
 
 
     private void generateQuadCache() {
+        //This method is here, so when I add more dynamic content to the base station model, it can easily be changed
         quadCache = generateQuads();
     }
 
@@ -93,7 +92,7 @@ public class BaseStationBakedModel implements IDynamicBakedModel {
         }
 
         if (layer.equals(RenderType.cutout())) {
-            BlockState cropState = Blocks.WHEAT.defaultBlockState().setValue(CropBlock.AGE, 7);
+            BlockState cropState = extraData.get(BaseStationBE.INCUBATING_BLOCK);
             Transformation translation = new Transformation(Matrix4f.createTranslateMatrix(8f/16,2 + 2f/16, 8f/16));
             Transformation scale = new Transformation(Matrix4f.createScaleMatrix(0.5f, 0.5f, 0.5f));
             return getQuadsOfExternalBlock(cropState, rand, layer, QuadTransformers.applying(scale.compose(translation)));

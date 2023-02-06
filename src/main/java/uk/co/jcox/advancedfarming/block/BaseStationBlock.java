@@ -25,6 +25,7 @@ import uk.co.jcox.advancedfarming.setup.Registration;
 public class BaseStationBlock extends Block implements EntityBlock {
 
     public static VoxelShape fullShape = Shapes.box(0, 0, 0, 1, 2, 1);
+    public static VoxelShape defaultShape = Shapes.box(0, 0, 0, 1, 1, 1);
 
     public BaseStationBlock() {
         super(Properties.of(Material.METAL).requiresCorrectToolForDrops());
@@ -39,12 +40,13 @@ public class BaseStationBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        if(level.isClientSide()) {
+        if (level.isClientSide()) {
             return null;
         }
 
+
         return (lvl, pos, blockState, tile) -> {
-            if(tile instanceof BaseStationBE entity) {
+            if (tile instanceof BaseStationBE entity) {
                 entity.tickServer();
             }
         };
@@ -54,13 +56,13 @@ public class BaseStationBlock extends Block implements EntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 
 
-        if(level.isClientSide) {
+        if (level.isClientSide) {
             return InteractionResult.FAIL;
         }
 
         ItemStack currentItem = player.getItemInHand(hand);
 
-        if(currentItem.getItem().equals(Registration.PLANT_VESSEL_ITEM.get())) {
+        if (currentItem.getItem().equals(Registration.PLANT_VESSEL_ITEM.get())) {
             currentItem.setCount(currentItem.getCount() - 1);
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof BaseStationBE baseStation) {
@@ -74,16 +76,12 @@ public class BaseStationBlock extends Block implements EntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter get, BlockPos pos, CollisionContext context) {
-        BlockEntity be = get.getBlockEntity(pos);
 
-
-        if (be instanceof BaseStationBE baseStation) {
-            if (baseStation.hasIncubator()) {
-                return fullShape;
+        if (get.getBlockEntity(pos) instanceof BaseStationBE be) {
+            if (!be.hasIncubator()) {
+                return defaultShape;
             }
         }
-
-        return Shapes.block();
+        return fullShape;
     }
-
 }
