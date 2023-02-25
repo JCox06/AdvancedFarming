@@ -193,6 +193,7 @@ public class BaseStationBE extends BlockEntity {
 
     public void isIncubatorPresent(boolean isPresent) {
         this.incubatorPresent = isPresent;
+        level.setBlockAndUpdate(this.getBlockPos().above(), Registration.BASE_STATION_TOPHALF_BLOCK.get().defaultBlockState());
         setChanged();
         level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
