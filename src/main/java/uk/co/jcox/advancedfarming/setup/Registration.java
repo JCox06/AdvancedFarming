@@ -10,9 +10,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import uk.co.jcox.advancedfarming.be.BaseStationBE;
+import uk.co.jcox.advancedfarming.be.PlantVesselBE;
 import uk.co.jcox.advancedfarming.be.WoodGeneratorBE;
-import uk.co.jcox.advancedfarming.block.*;
+import uk.co.jcox.advancedfarming.block.ManureBlock;
+import uk.co.jcox.advancedfarming.block.PlantVesselBlock;
+import uk.co.jcox.advancedfarming.block.WoodGeneratorBlock;
 import uk.co.jcox.advancedfarming.container.WoodGeneratorContainer;
 
 import static uk.co.jcox.advancedfarming.AdvancedFarming.MODID;
@@ -36,15 +38,11 @@ public class Registration {
     private static <B extends Block> RegistryObject<Item> fromBlock(RegistryObject<B> block) {
         return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), ITEM_PROPERTIES));
     }
-    //BaseStation
-    public static final RegistryObject<Block> BASE_STATION_TOPHALF_BLOCK = BLOCKS.register("base_station_tophalf", () -> new BaseStationTopBlock());
-    public static final RegistryObject<Block> BASE_STATION_BLOCK = BLOCKS.register("base_station", BaseStationBlock::new);
-    public static final RegistryObject<Item> BASE_STATION_ITEM = fromBlock(BASE_STATION_BLOCK);
-    public static final RegistryObject<BlockEntityType<BaseStationBE>> BASE_STATION_BE = BLOCK_ENTITIES.register("base_station",
-            () -> BlockEntityType.Builder.of(BaseStationBE::new, BASE_STATION_BLOCK.get()).build(null));
-
-    public static final RegistryObject<Block> PLANT_VESSEL_BLOCK = BLOCKS.register("plant_vessel", () -> new PlantVesselBlock());
-    public static final RegistryObject<Item> PLANT_VESSEL_ITEM = fromBlock(PLANT_VESSEL_BLOCK);
+    //PlantVessel
+    public static final RegistryObject<Block> PLANT_VESSEL = BLOCKS.register("plant_vessel", PlantVesselBlock::new);
+    public static final RegistryObject<Item> PLANT_VESSEL_ITEM = fromBlock(PLANT_VESSEL);
+    public static final RegistryObject<BlockEntityType<PlantVesselBE>> PLANT_VESSEL_BE = BLOCK_ENTITIES.register("plant_vessel",
+            () -> BlockEntityType.Builder.of(PlantVesselBE::new, PLANT_VESSEL.get()).build(null));
 
     //Wood Generator
     public static final RegistryObject<Block> WOOD_GENERATOR_BLOCK = BLOCKS.register("wood_generator", WoodGeneratorBlock::new);

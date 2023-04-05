@@ -4,16 +4,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -27,28 +25,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.co.jcox.advancedfarming.setup.Registration;
 
-import java.util.Objects;
-
-public class BaseStationBE extends BlockEntity {
+public class PlantVesselBE extends BlockEntity {
 
     private int counter;
 
     //NBT TAGS
     private static final String NBT_INCUBATING_BLOCK = "Crop";
-    private static final String NBT_INCUBATOR_PRESENT = "Incubator";
     private static final String NBT_CROP_AGE = "Age";
     private static final String NBT_INVENTORY_INPUT = "IInventory";
     private static final String NBT_INVENTORY_OUTPUT = "OInventory";
     private static final String NBT_ENERGY = "Energy";
     private static final String NBT_TICKER = "Counter";
 
-    //Model properties for baked model
-    public static final ModelProperty<BlockState> INCUBATING_BLOCK = new ModelProperty<>();
-    public static final ModelProperty<Boolean> INCUBATOR_PRESENT = new ModelProperty<>();
-    public static final ModelProperty<Integer> AGE = new ModelProperty<>();
-
     private final EnergyStorage energy = new EnergyStorage(30);
-    private final ItemStackHandler input = createInputInventory(5);
+    private final ItemStackHandler input = createInputInventory(1);
     private final ItemStackHandler output = createOutputInventory(5);
 
     private final LazyOptional<IItemHandler> inputHandler = LazyOptional.of(() -> input);
@@ -58,11 +48,10 @@ public class BaseStationBE extends BlockEntity {
 
     //Model Properties values
     private BlockState incubatingBlock;
-    private boolean incubatorPresent;
     private int age;
 
-    public BaseStationBE(BlockPos pos, BlockState state) {
-        super(Registration.BASE_STATION_BE.get(), pos, state);
+    public PlantVesselBE(BlockPos pos, BlockState state) {
+        super(Registration.PLANT_VESSEL_BE.get(), pos, state);
     }
 
     @Override
@@ -77,6 +66,14 @@ public class BaseStationBE extends BlockEntity {
 
     public void tickServer() {
 
+    }
+
+    public BlockState getIncubatingState() {
+        return this.incubatingBlock;
+    }
+
+    public int getAgeOfIncubatingBlock() {
+        return this.age;
     }
 
     @Override
@@ -116,11 +113,6 @@ public class BaseStationBE extends BlockEntity {
         if(tag.contains(NBT_INCUBATING_BLOCK)) {
             this.incubatingBlock = NbtUtils.readBlockState(tag.getCompound(NBT_INCUBATING_BLOCK));
         }
-
-        if(tag.contains(NBT_INCUBATOR_PRESENT)) {
-            this.incubatorPresent = tag.getBoolean(NBT_INCUBATOR_PRESENT);
-        }
-
         if(tag.contains(NBT_CROP_AGE)) {
             this.age = tag.getInt(NBT_CROP_AGE);
         }
@@ -130,22 +122,10 @@ public class BaseStationBE extends BlockEntity {
         if (this.incubatingBlock != null) {
             tag.put(NBT_INCUBATING_BLOCK, NbtUtils.writeBlockState(this.incubatingBlock));
         }
-        tag.putBoolean(NBT_INCUBATOR_PRESENT, this.incubatorPresent);
         tag.putInt(NBT_CROP_AGE, this.age);
     }
 
-
-
-    //The following methods are called when a player receives a new chunk
-    //The following method is called server side, and prepares the data
-    @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveClientData(tag);
-        return tag;
-    }
-
-    //This is called on the client
+//    This is called on the client
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         if (tag != null) {
@@ -153,49 +133,17 @@ public class BaseStationBE extends BlockEntity {
         }
     }
 
-
-    //The following set of the methods happen when a bock update happens
     //The following method is called serverside
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    //The following method is called on the client
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-        BlockState oldIncubatorBlock = this.incubatingBlock;
-        boolean oldIncubatorPresent = this.incubatorPresent;
-        CompoundTag tag = packet.getTag();
-        handleUpdateTag(tag);
-
-        if(!(Objects.equals(incubatingBlock, oldIncubatorBlock)) || oldIncubatorPresent != this.incubatorPresent) {
-            requestModelDataUpdate();
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-        }
-    }
-
-    @Override
-    public ModelData getModelData() {
-        return ModelData.builder()
-                .with(INCUBATING_BLOCK, this.incubatingBlock)
-                .with(INCUBATOR_PRESENT, this.incubatorPresent)
-                .with(AGE, this.age)
-                .build();
-    }
-
-
-    private void setIncubatingBlock(BlockState blockstate) {
-        this.incubatingBlock = blockstate;
-        setChanged();
-        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-    }
-
-    public void isIncubatorPresent(boolean isPresent) {
-        this.incubatorPresent = isPresent;
-        level.setBlockAndUpdate(this.getBlockPos().above(), Registration.BASE_STATION_TOPHALF_BLOCK.get().defaultBlockState());
-        setChanged();
-        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
+        saveClientData(tag);
+        return tag;
     }
 
     private ItemStackHandler createInputInventory(int size) {
@@ -203,6 +151,11 @@ public class BaseStationBE extends BlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 counter = 0;
+                Block block = Block.byItem(getStackInSlot(slot).getItem());
+                if (!block.equals(Blocks.AIR)) {
+                    incubatingBlock = block.defaultBlockState();
+                }
+
                 setChanged();
             }
 
@@ -238,17 +191,15 @@ public class BaseStationBE extends BlockEntity {
             }
         };
     }
-
-
-    public boolean hasIncubator() {
-        return this.incubatorPresent;
-    }
-
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
 
         if (side == null) {
             return this.combinedItemHandler.cast();
+        }
+
+        if (side == Direction.UP) {
+            return this.inputHandler.cast();
         }
 
         if(cap == ForgeCapabilities.ENERGY) {

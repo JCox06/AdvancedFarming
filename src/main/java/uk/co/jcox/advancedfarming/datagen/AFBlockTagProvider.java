@@ -17,12 +17,10 @@ public class AFBlockTagProvider extends BlockTagsProvider {
     @Override
     public void addTags() {
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(Registration.BASE_STATION_BLOCK.get())
-                .add(Registration.PLANT_VESSEL_BLOCK.get());
+                .add(Registration.PLANT_VESSEL.get());
 
         tag(BlockTags.NEEDS_STONE_TOOL)
-                .add(Registration.BASE_STATION_BLOCK.get())
-                .add(Registration.PLANT_VESSEL_BLOCK.get());
+                .add(Registration.PLANT_VESSEL.get());
     }
 
 }
