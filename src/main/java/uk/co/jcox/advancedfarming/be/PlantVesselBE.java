@@ -154,9 +154,9 @@ public class PlantVesselBE extends BlockEntity {
                 Block block = Block.byItem(getStackInSlot(slot).getItem());
                 if (!block.equals(Blocks.AIR)) {
                     incubatingBlock = block.defaultBlockState();
+                    setChanged();
+                    level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
                 }
-
-                setChanged();
             }
 
             @Override
