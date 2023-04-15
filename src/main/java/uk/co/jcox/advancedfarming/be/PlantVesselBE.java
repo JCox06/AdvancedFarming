@@ -10,6 +10,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.Tags;
@@ -65,7 +66,6 @@ public class PlantVesselBE extends BlockEntity {
 
 
     public void tickServer() {
-
     }
 
     public BlockState getIncubatingState() {
@@ -146,6 +146,14 @@ public class PlantVesselBE extends BlockEntity {
         return tag;
     }
 
+    private BlockState getIncubatingBlockState(Block block) {
+
+        if (block instanceof StemBlock stem && stem.getFruit().defaultBlockState().is(Registration.STEM_GROWN_BLOCK)) {
+            return stem.getFruit().defaultBlockState();
+        }
+        return block.defaultBlockState();
+    }
+
     private ItemStackHandler createInputInventory(int size) {
         return new ItemStackHandler(size) {
             @Override
@@ -153,7 +161,7 @@ public class PlantVesselBE extends BlockEntity {
                 counter = 0;
                 Block block = Block.byItem(getStackInSlot(slot).getItem());
                 if (!block.equals(Blocks.AIR)) {
-                    incubatingBlock = block.defaultBlockState();
+                    incubatingBlock = getIncubatingBlockState(block);
                     setChanged();
                     level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
                 }

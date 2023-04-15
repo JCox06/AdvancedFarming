@@ -20,7 +20,7 @@ public class PlantVesselBlock extends Block implements EntityBlock {
     private VoxelShape VOXEL_SHAPE = Shapes.box(0.1, 0.1, 0.1, 0.9, 0.8, 0.9);
 
     public PlantVesselBlock() {
-        super(Properties.of(Material.METAL).requiresCorrectToolForDrops());
+        super(Properties.of(Material.METAL).requiresCorrectToolForDrops().noOcclusion());
     }
 
     @Nullable

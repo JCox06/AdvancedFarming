@@ -1,7 +1,7 @@
 package uk.co.jcox.advancedfarming.setup;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -43,7 +43,7 @@ public class Registration {
     }
 
     //ForgeNamespace Tags
-    public static final TagKey<Item> STEM_GROWN_BLOCK = ItemTags.create(new ResourceLocation("forge", "stem_grown_seeds"));
+    public static final TagKey<Block> STEM_GROWN_BLOCK = BlockTags.create(new ResourceLocation("forge", "stem_grown"));
 
     //PlantVessel
     public static final RegistryObject<Block> PLANT_VESSEL = BLOCKS.register("plant_vessel", PlantVesselBlock::new);

@@ -1,4 +1,4 @@
-package uk.co.jcox.advancedfarming.client.gui;
+package uk.co.jcox.advancedfarming.client.render.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;

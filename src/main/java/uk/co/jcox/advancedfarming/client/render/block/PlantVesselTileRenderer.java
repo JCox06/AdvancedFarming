@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 import uk.co.jcox.advancedfarming.be.PlantVesselBE;
+import uk.co.jcox.advancedfarming.setup.Registration;
 
 public class PlantVesselTileRenderer implements BlockEntityRenderer<PlantVesselBE> {
 
@@ -30,7 +31,12 @@ public class PlantVesselTileRenderer implements BlockEntityRenderer<PlantVesselB
             matrixStack.pushPose();
             matrixStack.scale(0.5f, 0.5f, 0.5f);
             matrixStack.translate(0.5, 0.2, 0.5);
-            this.dispatcher.renderSingleBlock(state, matrixStack, buffer, combinedOverlay, packedLight, ModelData.EMPTY, RenderType.cutout());
+
+            if (state.is(Registration.STEM_GROWN_BLOCK)) {
+                this.dispatcher.renderSingleBlock(state, matrixStack, buffer, combinedOverlay, packedLight, ModelData.EMPTY, RenderType.solid());
+            } else {
+                this.dispatcher.renderSingleBlock(state, matrixStack, buffer, combinedOverlay, packedLight, ModelData.EMPTY, RenderType.cutout());
+            }
             matrixStack.popPose();
         }
     }

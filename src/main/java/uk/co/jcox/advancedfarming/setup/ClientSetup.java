@@ -7,7 +7,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import uk.co.jcox.advancedfarming.AdvancedFarming;
-import uk.co.jcox.advancedfarming.client.gui.WoodGeneratorScreen;
+import uk.co.jcox.advancedfarming.client.render.gui.WoodGeneratorScreen;
 import uk.co.jcox.advancedfarming.client.render.block.PlantVesselTileRenderer;
 
 @Mod.EventBusSubscriber(modid = AdvancedFarming.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
